@@ -12,6 +12,14 @@ export interface MainCardProps extends PostData {
   showTextBackground?: boolean; // Show text background when no image
   headerClass?: string; // Additional classes for the header
   extraClasses?: string; // Additional classes for the whole card
+  // --- Background Image Props ---
+  bgImage?: string | string[]; // Single image URL or array of URLs for carousel
+  bgOverlay?: number; // Overlay opacity (0-1, default 0.4)
+  bgBlur?: number; // Background blur in px (default 0)
+  bgPosition?: string; // CSS object-position (default "center")
+  bgFixed?: boolean; // Parallax background (default false)
+  bgInterval?: number; // Carousel interval in ms (default 5000)
+  bgTransition?: number; // Crossfade duration in ms (default 1000)
 }
 
 const {
@@ -24,13 +32,88 @@ const {
   showTextBackground = true,
   headerClass = "",
   extraClasses = "",
+  bgImage,
+  bgOverlay = 0.4,
+  bgBlur = 0,
+  bgPosition = "center",
+  bgFixed = false,
+  bgInterval = 5000,
+  bgTransition = 1000,
 } = Astro.props as MainCardProps;
+
+// Normalize bgImage to array
+const bgImages: string[] = bgImage
+  ? Array.isArray(bgImage) ? bgImage : [bgImage]
+  : [];
+const hasBgImage = bgImages.length > 0;
+const isCarousel = bgImages.length > 1;
 
 // Create a more descriptive label for the button
 const accessibleHelpText = `${helpText}: ${title}`;
 ---
 
-<Card class={`overflow-hidden ${extraClasses}`}>
+<Card class={`overflow-hidden ${hasBgImage ? 'maincard-has-bg' : ''} ${extraClasses}`}>
+  {/* Background Image Layer */}
+  {
+    hasBgImage && (
+      <>
+        {/* Spacer: in normal flow, invisible, sets the card's min-height to match image aspect ratio */}
+        <img
+          src={bgImages[0]}
+          alt=""
+          aria-hidden="true"
+          class="maincard-bg-spacer"
+          loading="eager"
+        />
+        {/* Visible background: absolute, covers the card */}
+        <div
+          class="maincard-bg-wrapper"
+          data-carousel={isCarousel ? "true" : undefined}
+          data-carousel-interval={isCarousel ? bgInterval : undefined}
+          data-carousel-transition={isCarousel ? bgTransition : undefined}
+          data-carousel-images={isCarousel ? JSON.stringify(bgImages) : undefined}
+        >
+          {/* Primary image layer (always visible initially) */}
+          <img
+            src={bgImages[0]}
+            alt=""
+            aria-hidden="true"
+            class="maincard-bg-image maincard-bg-slide maincard-bg-slide-active"
+            data-slide-index="0"
+            style={`
+              object-position: ${bgPosition};
+              ${bgBlur > 0 ? `filter: blur(${bgBlur}px); transform: scale(${1 + bgBlur * 0.01});` : ''}
+            `}
+            loading="eager"
+          />
+          {/* Secondary image layer (for crossfade, initially hidden) */}
+          {
+            isCarousel && (
+              <img
+                src={bgImages[1]}
+                alt=""
+                aria-hidden="true"
+                class="maincard-bg-image maincard-bg-slide"
+                data-slide-index="1"
+                style={`
+                  object-position: ${bgPosition};
+                  ${bgBlur > 0 ? `filter: blur(${bgBlur}px); transform: scale(${1 + bgBlur * 0.01});` : ''}
+                `}
+                loading="eager"
+              />
+            )
+          }
+          <div
+            class="maincard-bg-overlay"
+            style={`--bg-overlay-opacity: ${bgOverlay};`}
+            aria-hidden="true"
+          />
+        </div>
+      </>
+    )
+  }
+  {/* Main content overlay — sits on top of the background */}
+  <div class:list={[hasBgImage && "maincard-content-overlay"]}>
   {
     image ? (
       // With image - show image with overlay title
@@ -50,8 +133,8 @@ const accessibleHelpText = `${helpText}: ${title}`;
         {/* Flex container for Title and Button */}
         <div class="absolute bottom-4 left-4 right-4 lg:bottom-6 lg:left-6 lg:right-6 flex items-end justify-between gap-4">
           {/* Title */}
-          <div class="inline-block bg-black/60 backdrop-blur-md px-4 py-2 rounded-xl border border-white/40 shadow-lg">
-            <h1 class="text-xl sm:text-2xl lg:text-4xl font-bold text-white">{title}</h1>
+          <div class="inline-block bg-base-100/60 backdrop-blur-md px-4 py-2 rounded-xl border border-base-content/20 shadow-lg transition-colors hover:bg-base-100/80">
+            <h1 class="text-xl sm:text-2xl lg:text-4xl font-bold text-base-content">{title}</h1>
           </div>
 
           {/* Description Button */}
@@ -61,7 +144,7 @@ const accessibleHelpText = `${helpText}: ${title}`;
                 <label
                   tabindex="0"
                   aria-label={accessibleHelpText}
-                  class="group btn btn-sm px-2 bg-black/60 backdrop-blur-md hover:bg-black/80 border border-white/40 text-white shadow-lg rounded-full flex items-center gap-0 transition-all duration-300 ease-in-out"
+                  class="group btn btn-sm px-2 bg-base-100/60 backdrop-blur-md hover:bg-base-200/80 border border-base-content/20 text-base-content shadow-lg rounded-full flex items-center gap-0 transition-all duration-300 ease-in-out"
                 >
                   <Icon name={infoIcon} class="w-4 h-4 flex-shrink-0" />
                   <span class="w-0 overflow-hidden group-hover:w-20 transition-all duration-300 text-xs whitespace-nowrap">
@@ -70,7 +153,7 @@ const accessibleHelpText = `${helpText}: ${title}`;
                 </label>
                 <div
                   tabindex="0"
-                  class="dropdown-content z-[1] card w-64 sm:w-80 p-2 shadow-lg bg-black/70 backdrop-blur-md text-white border border-white/20 mb-4"
+                  class="dropdown-content z-[1] card w-64 sm:w-80 p-2 shadow-xl bg-base-100/80 backdrop-blur-xl text-base-content border border-base-content/20 mb-4"
                   data-state="closed"
                 >
                   <div class="card-body p-3">
@@ -85,7 +168,7 @@ const accessibleHelpText = `${helpText}: ${title}`;
     ) : textOverlay ? (
       // No image, but with textOverlay - show gradient background with overlay text
       <div class="relative">
-        <div class={`aspect-video w-full overflow-hidden bg-gradient-to-br from-base-300 to-base-100 ${headerClass}`}>
+        <div class={`aspect-video w-full overflow-hidden bg-gradient-to-br ${hasBgImage ? 'from-transparent to-transparent' : 'from-base-300 to-base-100'} ${headerClass}`}>
           {showTextBackground && textOverlay && (
             <div class="absolute inset-0 w-full h-full error-animation-container">
               <div class="text-9xl md:text-[12rem] font-bold text-primary opacity-20 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -98,8 +181,8 @@ const accessibleHelpText = `${helpText}: ${title}`;
         {/* Flex container for Title and Button */}
         <div class="absolute bottom-4 left-4 right-4 lg:bottom-6 lg:left-6 lg:right-6 flex items-end justify-between gap-4">
           {/* Title */}
-          <div class="inline-block bg-black/60 backdrop-blur-md px-4 py-2 rounded-xl border border-white/40 shadow-lg">
-            <h1 class="text-xl sm:text-2xl lg:text-4xl font-bold text-white">{title}</h1>
+          <div class="inline-block bg-base-100/60 backdrop-blur-md px-4 py-2 rounded-xl border border-base-content/20 shadow-lg transition-colors hover:bg-base-100/80">
+            <h1 class="text-xl sm:text-2xl lg:text-4xl font-bold text-base-content">{title}</h1>
           </div>
 
           {/* Description Button */}
@@ -109,7 +192,7 @@ const accessibleHelpText = `${helpText}: ${title}`;
                 <label
                   tabindex="0"
                   aria-label={accessibleHelpText}
-                  class="group btn btn-sm px-2 bg-black/60 backdrop-blur-md hover:bg-black/80 border border-white/40 text-white shadow-lg rounded-full flex items-center gap-0 transition-all duration-300 ease-in-out"
+                  class="group btn btn-sm px-2 bg-base-100/60 backdrop-blur-md hover:bg-base-200/80 border border-base-content/20 text-base-content shadow-lg rounded-full flex items-center gap-0 transition-all duration-300 ease-in-out"
                 >
                   <Icon name={infoIcon} class="w-4 h-4 flex-shrink-0" />
                   <span class="w-0 overflow-hidden group-hover:w-20 transition-all duration-300 text-xs whitespace-nowrap">
@@ -118,7 +201,7 @@ const accessibleHelpText = `${helpText}: ${title}`;
                 </label>
                 <div
                   tabindex="0"
-                  class="dropdown-content z-[1] card w-64 sm:w-80 p-2 shadow-lg bg-black/70 backdrop-blur-md text-white border border-white/20 mb-4"
+                  class="dropdown-content z-[1] card w-64 sm:w-80 p-2 shadow-xl bg-base-100/80 backdrop-blur-xl text-base-content border border-base-content/20 mb-4"
                   data-state="closed"
                 >
                   <div class="card-body p-3">
@@ -130,8 +213,16 @@ const accessibleHelpText = `${helpText}: ${title}`;
           )}
         </div>
       </div>
+    ) : hasBgImage ? (
+      // Has background image, no textOverlay/image - show huge translucent centered title
+      <div class="flex flex-col flex-1 items-center justify-center p-8 sm:p-16 min-h-[40vh]">
+        <h1 class="text-6xl sm:text-8xl md:text-[10rem] font-black opacity-20 text-center tracking-tight leading-none overflow-hidden drop-shadow-sm select-none transition-all duration-500 hover:opacity-30 hover:scale-105">
+          {title}
+        </h1>
+        {description && <p class="mt-6 text-lg sm:text-xl text-base-content/80 font-medium tracking-wide bg-base-100/40 backdrop-blur-md px-6 py-2 rounded-full border border-base-content/10 shadow-sm">{description}</p>}
+      </div>
     ) : (
-      // No image, no textOverlay - show simple title and description at top
+      // No image, no textOverlay, no bgImage - show simple title and description at top
       <div class="pt-6 px-6">
         <h1 class="text-xl sm:text-2xl lg:text-4xl font-bold">{title}</h1>
         {description && <p class="mt-2 text-sm text-base-content/80">{description}</p>}
@@ -140,36 +231,148 @@ const accessibleHelpText = `${helpText}: ${title}`;
   }
 
   <!-- Content section -->
-  <div class="p-4 sm:p-6">
+  <div class:list={["p-4 sm:p-6", hasBgImage && "maincard-content-on-bg"]}>
     <slot />
   </div>
+  </div> {/* end .maincard-content-overlay (or plain wrapper) */}
 </Card>
+
+<style>
+  /* Spacer: in-flow, invisible, sets min-height via aspect ratio */
+  .maincard-bg-spacer {
+    display: block;
+    width: 100%;
+    height: auto;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Background image container */
+  .maincard-bg-wrapper {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  /* Each slide layer — stacked absolutely within the wrapper */
+  .maincard-bg-slide {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity var(--bg-transition, 1s) ease-in-out;
+  }
+
+  .maincard-bg-slide-active {
+    opacity: 1;
+  }
+
+  .maincard-bg-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    /* Adapts perfectly to current theme: white in light modes, dark in dark modes */
+    background-color: oklch(var(--b1) / var(--bg-overlay-opacity, 0.4));
+    transition: background-color 0.5s ease;
+  }
+
+  /* Card positioning context */
+  :global(.maincard-has-bg) {
+    position: relative;
+  }
+
+  /* Content overlay */
+  .maincard-content-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .maincard-content-on-bg {
+    color: oklch(var(--bc)); /* Auto-adapts text to theme's ideal text color */
+  }
+
+  .maincard-content-on-bg :global(h1),
+  .maincard-content-on-bg :global(h2),
+  .maincard-content-on-bg :global(h3),
+  .maincard-content-on-bg :global(p),
+  .maincard-content-on-bg :global(span) {
+    color: inherit;
+  }
+</style>
 
 <script>
   document.addEventListener("astro:page-load", () => {
-    // Get all info buttons and dropdown contents
+    // --- Dropdown toggle (existing) ---
     const infoButtons = document.querySelectorAll(".dropdown label");
     const dropdownContents = document.querySelectorAll(".dropdown-content");
-
-    // Add click event listeners
     infoButtons.forEach((button, index) => {
       button.addEventListener("click", () => {
         const content = dropdownContents[index];
         const currentState = content.getAttribute("data-state");
-
-        // Toggle state
         if (currentState === "closed") {
           content.setAttribute("data-state", "open");
-          // Add animation classes when opening
           content.classList.add("scale-100", "opacity-100");
           content.classList.remove("scale-90", "opacity-0");
         } else {
           content.setAttribute("data-state", "closed");
-          // Remove animation classes when closing
           content.classList.add("scale-90", "opacity-0");
           content.classList.remove("scale-100", "opacity-100");
         }
       });
+    });
+
+    // --- Background image carousel ---
+    document.querySelectorAll<HTMLElement>(".maincard-bg-wrapper[data-carousel='true']").forEach((wrapper) => {
+      const images: string[] = JSON.parse(wrapper.dataset.carouselImages || "[]");
+      const interval = parseInt(wrapper.dataset.carouselInterval || "5000", 10);
+      const transitionMs = parseInt(wrapper.dataset.carouselTransition || "1000", 10);
+
+      if (images.length < 2) return;
+
+      // Set CSS variable for transition duration
+      wrapper.style.setProperty("--bg-transition", `${transitionMs}ms`);
+
+      const slideA = wrapper.querySelector<HTMLImageElement>(".maincard-bg-slide[data-slide-index='0']");
+      const slideB = wrapper.querySelector<HTMLImageElement>(".maincard-bg-slide[data-slide-index='1']");
+      if (!slideA || !slideB) return;
+
+      let currentIndex = 0;
+      let activeSlide = slideA;
+      let inactiveSlide = slideB;
+
+      // Preload all images
+      images.forEach((src) => {
+        const img = new window.Image();
+        img.src = src;
+      });
+
+      const advance = () => {
+        currentIndex = (currentIndex + 1) % images.length;
+
+        // Load next image into the inactive slide
+        inactiveSlide.src = images[currentIndex];
+
+        // Wait a frame for the src to take effect, then crossfade
+        requestAnimationFrame(() => {
+          inactiveSlide.classList.add("maincard-bg-slide-active");
+          activeSlide.classList.remove("maincard-bg-slide-active");
+
+          // Swap references
+          [activeSlide, inactiveSlide] = [inactiveSlide, activeSlide];
+        });
+      };
+
+      setInterval(advance, interval);
     });
   });
 </script>
