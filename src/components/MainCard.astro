@@ -17,7 +17,6 @@ export interface MainCardProps extends PostData {
   bgOverlay?: number; // Overlay opacity (0-1, default 0.4)
   bgBlur?: number; // Background blur in px (default 0)
   bgPosition?: string; // CSS object-position (default "center")
-  bgFixed?: boolean; // Parallax background (default false)
   bgInterval?: number; // Carousel interval in ms (default 5000)
   bgTransition?: number; // Crossfade duration in ms (default 1000)
 }
@@ -36,7 +35,6 @@ const {
   bgOverlay = 0.4,
   bgBlur = 0,
   bgPosition = "center",
-  bgFixed = false,
   bgInterval = 5000,
   bgTransition = 1000,
 } = Astro.props as MainCardProps;

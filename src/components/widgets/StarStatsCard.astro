@@ -1,15 +1,15 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import { Icon } from "astro-icon/components";
 
 const posts = await getCollection("blog");
 
 // Filter out drafts if they exist, to only count published posts
-const publishedPosts = posts.filter(post => !post.data.draft);
+const publishedPosts = posts.filter((post: CollectionEntry<"blog">) => !post.data.draft);
 const totalPosts = publishedPosts.length;
 
 let latestDate = 0;
-publishedPosts.forEach((post) => {
+publishedPosts.forEach((post: CollectionEntry<"blog">) => {
   const dateObj = post.data.updatedDate || post.data.pubDate;
   if (dateObj) {
     const time = new Date(dateObj).getTime();
