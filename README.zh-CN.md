@@ -1,12 +1,12 @@
 <div align="center">
   <img alt="Frosti Logo" src="https://github.com/EveSunMaple/Frosti/blob/main/docs/logo.png" width="280px">
   <br/><br/>
-  <h1>BlogRefined / Frosti (深度定制版)</h1>
+  <h1>REFrosti(Refined & New Frosti)</h1>
   <p><a href="./README.md">English</a> | <a href="./README.zh-CN.md">简体中文</a></p>
 </div>
 
 > **声明：** 本项目是基于 EveSunMaple 的优秀开源主题 [Frosti](https://github.com/EveSunMaple/Frosti) 深度开发和定制的高级版本。  
-> 我们在 Frosti 极速的 Astro 架构基础之上，全面引入了顶级的毛玻璃 (Glassmorphism) 美学设计、实时交互的数据可视化组件，以及突破性的全界面本地可视化发文 GUI 工具。
+> 我在 Frosti 极速的 Astro 架构基础之上，全面引入了顶级的毛玻璃 (Glassmorphism) 美学设计、实时交互的数据可视化组件，以及突破性的全界面本地可视化发文 GUI 工具。
 
 [![license](https://badgen.net/github/license/EveSunMaple/Frosti)](https://github.com/EveSunMaple/Frosti/blob/main/LICENSE)&nbsp;&nbsp;&nbsp;[![built with astro](https://badgen.net/badge/built%20with/Astro/ff5a03?icon=astro)](https://astro.build)
 
