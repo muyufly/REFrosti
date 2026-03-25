@@ -1,11 +1,11 @@
 <div align="center">
   <img alt="Frosti Logo" src="https://github.com/EveSunMaple/Frosti/blob/main/docs/logo.png" width="280px">
   <br/><br/>
-  <h1>REFrosti(Refined & New Frosti)</h1>
+  <h1>REFrosti(Refined & EasyToPublish Frosti)</h1>
   <p><a href="./README.md">English</a> | <a href="./README.zh-CN.md">简体中文</a></p>
 </div>
 
-> **Notice:** This project is a heavily customized and enhanced fork of the original [Frosti Theme by EveSunMaple](https://github.com/EveSunMaple/Frosti).  
+> **Notice:** This project is a customized and enhanced fork of the original [Frosti Theme by EveSunMaple](https://github.com/EveSunMaple/Frosti).  
 > I have built upon Frosti's incredible Astro performance to introduce premium glassmorphism aesthetics, dynamic interactive data visualizations, and a groundbreaking zero-dependency local GUI Publisher.
 
 [![license](https://badgen.net/github/license/EveSunMaple/Frosti)](https://github.com/EveSunMaple/Frosti/blob/main/LICENSE)&nbsp;&nbsp;&nbsp;[![built with astro](https://badgen.net/badge/built%20with/Astro/ff5a03?icon=astro)](https://astro.build)

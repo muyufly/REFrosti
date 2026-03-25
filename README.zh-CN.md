@@ -1,7 +1,7 @@
 <div align="center">
   <img alt="Frosti Logo" src="https://github.com/EveSunMaple/Frosti/blob/main/docs/logo.png" width="280px">
   <br/><br/>
-  <h1>REFrosti(Refined & New Frosti)</h1>
+  <h1>REFrosti(Refined & EasyToPublish Frosti)</h1>
   <p><a href="./README.md">English</a> | <a href="./README.zh-CN.md">简体中文</a></p>
 </div>
 
