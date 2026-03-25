@@ -165,8 +165,8 @@ const lastUpdated = latestDate > 0
       });
       
       if (isLightMode) {
-        // Light yellow translucent stroke for light mode
-        ctx.strokeStyle = "rgba(250, 204, 21, 0.15)";
+        // Deep blue translucent stroke for light mode (better visibility)
+        ctx.strokeStyle = "rgba(30, 58, 138, 0.15)";
       } else {
         // Deep subtly glowing stroke for dark mode matching the star hue
         ctx.strokeStyle = `rgba(${particleColor.r}, ${particleColor.g}, ${particleColor.b}, 0.08)`;
