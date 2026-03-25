@@ -69,7 +69,7 @@
           </div>
           <div class="flex flex-col gap-1">
             <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Publish Date</label>
-            <input id="fmDate" type="date" class="bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:border-accent focus:outline-none transition-colors [color-scheme:dark]" />
+            <input id="fmDate" type="date" class="bg-slate-900 text-slate-200 border border-slate-800 rounded-lg px-3 py-2 text-sm focus:border-accent focus:outline-none transition-colors [color-scheme:dark]" />
           </div>
           <div class="flex flex-col gap-1 md:col-span-2">
             <label class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Description</label>
@@ -237,7 +237,7 @@
         <div class="flex items-center justify-between bg-bgCard border border-slate-800 rounded-xl p-3 hover:border-slate-700 transition">
           <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-lg flex items-center justify-center text-lg ${iconBg}">${isMd?"📝":"🖼️"}</div>
-            <div><div class="font-semibold text-sm">${s.name}</div><div class="text-xs text-slate-500">${(s.file.size/1024).toFixed(1)} KB</div></div>
+            <div><div class="font-semibold text-sm text-slate-200">${s.name}</div><div class="text-xs text-slate-500">${(s.file.size/1024).toFixed(1)} KB</div></div>
           </div>
           <div class="flex items-center gap-3">
             <span class="text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded-full ${statBg}">${s.status}</span>
