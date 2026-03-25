@@ -1,38 +1,73 @@
-<pre align="center">
-A clean, elegant, and fast static blog template! 🚀 Built with Astro
-</pre>
-
 <div align="center">
-<img alt="Frosti Logo" src="https://github.com/EveSunMaple/Frosti/blob/main/docs/logo.png" width="280px">
+  <img alt="Frosti Logo" src="https://github.com/EveSunMaple/Frosti/blob/main/docs/logo.png" width="280px">
+  <br/><br/>
+  <h1>BlogRefined / Frosti (Custom Edition)</h1>
 </div>
 
-[![license](https://badgen.net/github/license/EveSunMaple/Frosti)](https://github.com/EveSunMaple/Frosti/blob/main/LICENSE)&nbsp;&nbsp;&nbsp;[![release](https://badgen.net/github/release/EveSunMaple/Frosti)](https://github.com/EveSunMaple/Frosti/releases)&nbsp;&nbsp;&nbsp;[![stackblitz](https://developer.stackblitz.com/img/open_in_stackblitz_small.svg)](https://stackblitz.com/github/EveSunMaple/Frosti)
+> **Notice:** This project is a heavily customized and enhanced fork of the original [Frosti Theme by EveSunMaple](https://github.com/EveSunMaple/Frosti).  
+> We have built upon Frosti's incredible Astro performance to introduce premium glassmorphism aesthetics, dynamic interactive data visualizations, and a groundbreaking zero-dependency local GUI Publisher.
 
-[**🖥️ Frosti Demo**](https://frosti.saroprock.com)&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;[**🌏 Chinese README**](https://github.com/EveSunMaple/Frosti/blob/main/docs/README.zh-CN.md)&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;[**❤️ My Blog**](https://www.saroprock.com)
+[![license](https://badgen.net/github/license/EveSunMaple/Frosti)](https://github.com/EveSunMaple/Frosti/blob/main/LICENSE)&nbsp;&nbsp;&nbsp;[![built with astro](https://badgen.net/badge/built%20with/Astro/ff5a03?icon=astro)](https://astro.build)
 
-## 📷 Preview
+## ✨ What's New in This Version?
 
-![preview](./docs/preview-light.png)
+In addition to Frosti's foundational features (Light/Dark mode, Pagefind, ViewTransitions, RSS), this custom edition introduces:
 
-## ✨ Features
+- 🌌 **Starfield Statistics (`StarStatsCard`)**: A 60fps HTML5 Canvas orbital simulation on the homepage. It dynamically renders a pulsing glowing star for **every single article** you publish. The orbits perfectly adapt to the container size, and the colors automatically sync with your current Light/Dark theme.
+- 🪟 **Premium Glassmorphism UI**: Core components (`MainCard`, `CategoryGrid`) have been completely redesigned with high-end backdrop blurs, floating interactive shadows, and hardware-accelerated CSS rendering to ensure silky smooth performance.
+- 🚀 **Blog Publisher GUI**: A beautifully designed, standalone local visual dashboard that completely eliminates the need for manual markdown YAML writing and terminal git commands.
 
-- ✅ **Light** / **Dark** mode available
-- ✅ Super fast performance with excellent SEO
-- ✅ View transition animations (using ClientRouter)
-- ✅ Search functionality for your articles (using Pagefind)
-- ✅ Responsive design built with [Tailwind CSS](https://tailwindcss.com/) and [daisyUI](https://daisyui.com/)
-- ✅ RSS feed support
-- 🛠️ Easy to use blog
-  - Customize your blog content in `frosti.config.yaml`
-  
-## 💬 Comment System
+---
 
-- **Tutorial (Waline)**
-  - https://frosti.saroprock.com/blog/adding-comment-systems
-- **Custom styles (SCSS)**
-  - This repo provides a default, site-matching comment stylesheet at `src/styles/waline.scss`. You can use it as-is or modify it to fit your needs.
+## 🚀 The Blog Publisher GUI (Stand-alone Tool)
 
-## ✒️ Article Information
+Publishing articles shouldn't feel like programming. We've included a completely standalone, zero-dependency Node.js visual editor that makes publishing markdown blogs as easy as posting on social media.
+
+### 快速开始 (How to Use):
+
+1. **Start the Publisher**:
+   Open a terminal in the project directory and run:
+   ```sh
+   pnpm run publish
+   ```
+2. **Open the Dashboard**:
+   Go to **`http://localhost:3721`** in your browser to view the Publisher GUI.
+
+### 核心工作流 (Workflow):
+- **Drag & Drop**: Drag and drop your `.md` / `.mdx` files into the left zone. Drop your cover images or inline pictures into the right zone. Files are automatically routed to `src/content/blog/` and `public/image/` respectively.
+- **UI Frontmatter Editor**: The dashboard instantly parses your markdown file and opens a clean visual form. Edit your **Title, Date, Description, Images, Categories, and Tags** without ever touching raw YAML formatting.
+- **One-Click Publish**: Enter a commit message (or leave it blank), click **🚀 Publish**, and the tool will automatically execute `git add .`, `git commit -m "..."`, and `git push`. Your blog is live instantly!
+
+*(Note: The Publisher runs on a separate port from Astro. You can run `pnpm run publish` and `pnpm run dev` simultaneously!)*
+
+---
+
+## ⬇️ Installation & Local Development
+
+1. Install pnpm package manager (if you haven't already)
+```sh
+npm i -g pnpm
+```
+
+2. Install project dependencies
+```sh
+pnpm i
+```
+
+3. Generate search index & Start development server
+```sh
+# Generate the search index for Pagefind
+pnpm run search:index
+
+# Start the Astro development server (http://localhost:4321)
+pnpm run dev
+```
+
+---
+
+## ✒️ Article Information (Frontmatter Schema)
+
+If you still prefer writing articles manually without the GUI Publisher, use this YAML header format:
 
 |    Name     |       Meaning       | Required |
 | :---------: | :-----------------: | :------: |
@@ -46,185 +81,57 @@ A clean, elegant, and fast static blog template! 🚀 Built with Astro
 |    draft    |    Draft status     |    No    |
 
 > [!TIP]
->
 > - You can pin your article by setting the `badge` property to `Pin`
-> - Setting `draft: true` will mark the article as a draft, and it won't appear in the article list
+> - Setting `draft: true` will mark the article as a draft, preventing it from appearing in production builds.
 
-## ⬇️ Usage
+---
 
-1. Install pnpm package manager (if you haven't already)
+## 🔧 Configuration (`frosti.config.yaml`)
 
-```sh
-npm i -g pnpm
-```
+Frosti uses `frosti.config.yaml` as its core configuration file.
 
-2. Clone the project
-
-```sh
-git clone https://github.com/EveSunMaple/Frosti.git Frosti
-```
-
-3. Enter the project folder
-
-```sh
-cd Frosti
-```
-
-4. Install dependencies
-
-```sh
-pnpm i
-```
-
-### 5. Debug and Run the Project
-
-**On first run or after updating content**, execute `search:index` to generate the search index:
-
-```sh
-# Generate the search index for development use
-pnpm run search:index
-
-pnpm run dev
-```
-
-## 🔧 Configuration
-
-Frosti uses `frosti.config.yaml` as its configuration file, where you can configure the website's basic information, navigation bar, footer, and more.
-
-### Website Basic Information (site)
-
+### Website Basic Information
 ```yaml
 site:
-  tab: Frosti # Text displayed in the browser tab
-  title: Frosti # Website title
-  description: A clean, elegant, and fast static blog template! # Website description for SEO
-  language: en # Website language code, e.g., "en" for English, "zh" for Chinese
-  favicon: /favicon.ico # Website favicon path
+  tab: BlogRefined # Browser tab text
+  title: BlogRefined # Website title
+  description: A clean, elegant, and interactive blog template
+  language: en # e.g., "en" or "zh"
+  favicon: /favicon.ico
 ```
 
-### Theme Settings (theme)
-
+### Theme Settings
 ```yaml
 theme:
-  light: winter # Light mode theme, based on daisyUI themes
-  dark: dracula # Dark mode theme, based on daisyUI themes
-  code: github-dark # Code block theme style
+  light: winter  # Light mode daisyUI theme
+  dark: dracula  # Dark mode daisyUI theme
+  code: github-dark # Shiki code block theme
 ```
 
-- Themes are based on options provided by [daisyUI](https://daisyui.com/docs/themes/)
-- Code block themes use styles from [Shiki](https://shiki.style/themes)
-
-### Date Format (date_format)
-
-```yaml
-date_format: ddd MMM DD YYYY # Date display format
-```
-
-### Menu Configuration (menu)
-
+### Menu & Navigation
 ```yaml
 menu:
-  - id: home # Unique identifier for the menu item
-    text: Home # Text displayed in the menu
-    href: / # Link address
-    svg: "material-symbols:home-outline-rounded" # Icon
-    target: _self # Link target
+  - id: home
+    text: Home
+    href: /
+    svg: "material-symbols:home-outline-rounded" # Iconify string
+    target: _self
 ```
 
-Each menu item includes the following properties:
+#### Multi-Language Support
+Configure interface text translations inside `src/i18n/translations.yaml` based on your `site.language` code.
 
-- `id`: Unique identifier
-- `text`: Displayed text
-- `href`: Link address
-- `svg`: Icon code using [Iconify](https://icon-sets.iconify.design/) icon set
-- `target`: Link target (`_self` for current window or `_blank` for new window)
+---
 
-#### Sub-menu Items (subItems)
+## 💬 Comment System
 
-You can configure sub-menu items by adding `subItems` with the same format as main menu items.
+- **Tutorial (Waline)**: https://frosti.saroprock.com/blog/adding-comment-systems
+- **Custom styles**: A default, site-matching comment stylesheet is provided at `src/styles/waline.scss`.
 
-### User Information (user)
-
-```yaml
-user:
-  name: EveSunMaple # Username
-  site: "https://example.com" # User website
-  avatar: /profile.png # User avatar
-```
-
-### Social Media Configuration (social)
-
-Sidebar and footer can have different social media links:
-
-```yaml
-sidebar:
-  social:
-    - href: "https://github.com/username" # Link address
-      ariaLabel: Github # Accessibility label
-      title: Github # Tooltip on hover
-      svg: "ri:github-line" # Icon code
-```
-
-### Icon Settings (icon)
-
-Frosti uses [Iconify](https://icon-sets.iconify.design/) as its icon library. You can search for icons you like on their website, then copy the icon code to the `svg` field in the configuration file.
-
-### Language Settings (language)
-
-Frosti supports multiple languages, configured through:
-
-1. Setting the default language in `frosti.config.yaml`:
-
-```yaml
-site:
-  language: en # Set to "en" for English, "zh" for Chinese
-```
-
-2. Managing all interface text translations in the `src/i18n/translations.yaml` file:
-
-```yaml
-en: # English translations
-  label:
-    noTag: No tags assigned
-    tagCard: Tags
-    # Other English labels...
-
-zh: # Chinese translations
-  label:
-    noTag: 未分配标签
-    tagCard: 标签
-    # Other Chinese labels...
-```
-
-#### Adding or Modifying Translations
-
-To add new language support or modify existing translations:
-
-1. Add a new language code and corresponding translations in the `translations.yaml` file, or modify existing translations
-2. Change `site.language` in `frosti.config.yaml` to your preferred language code
-
-## 🚀 Automatic Updates
-
-To keep your project up to date with the latest version of Frosti, you can use the provided update script.
-
-```sh
-bash frosti.update.sh
-```
-
-This script will:
-
-1.  **Clone the latest version** of the Frosti repository.
-2.  **Safely update** your project files, adding and overwriting files based on the `.updateignore` file.
-3.  **Intelligently delete** files that have been removed from the official repository, without affecting your ignored files.
-4.  **Clean up** any remaining empty folders and temporary files.
-5.  **Install or update** dependencies using `pnpm`.
-
-## 👀 Issues
-
-If you have any questions or suggestions, you can provide feedback or communicate with the developer by submitting Issues!
+---
 
 ## 🎉 Acknowledgements
 
-@[Saicaca](https://github.com/saicaca) Their inspiration was the main reason I created this theme
-
-@[WRXinYue](https://github.com/WRXinYue) They helped me a lot when I was first getting started
+- **First and foremost, massive thanks to [EveSunMaple](https://github.com/EveSunMaple/Frosti)** for creating the incredibly fast and robust original Frosti Template.
+- [Astro](https://astro.build/) for the insanely fast web framework.
+- [Tailwind CSS](https://tailwindcss.com/) & [daisyUI](https://daisyui.com/) for the styling engines.
