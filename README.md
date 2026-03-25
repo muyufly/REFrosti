@@ -2,6 +2,7 @@
   <img alt="Frosti Logo" src="https://github.com/EveSunMaple/Frosti/blob/main/docs/logo.png" width="280px">
   <br/><br/>
   <h1>BlogRefined / Frosti (Custom Edition)</h1>
+  <p><a href="./README.md">English</a> | <a href="./README.zh-CN.md">简体中文</a></p>
 </div>
 
 > **Notice:** This project is a heavily customized and enhanced fork of the original [Frosti Theme by EveSunMaple](https://github.com/EveSunMaple/Frosti).  
